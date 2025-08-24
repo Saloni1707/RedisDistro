@@ -1,0 +1,8 @@
+//central redis client config(ioredis or redis) library
+
+export interface Tasks{
+    type:string;
+    payload: Record<string,any>;
+    retries:number;
+}
+
