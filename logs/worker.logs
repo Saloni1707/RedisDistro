@@ -1,4 +1,3 @@
-//central redis client config(ioredis or redis) library
 
 export interface Tasks{
     type:string;

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { Redis } from 'ioredis' // Import Redis as a named import
+import {Redis} from 'ioredis' // Import Redis as a named import
 
 export const redis = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379")
 
@@ -13,7 +13,7 @@ export const METRICS_KEY={
 };
 
 
-export async function getQueueLengths() {
+export async function getQueueLengths():Promise<{queued:number,dead:number}> {
     const results = await redis
         .multi()
         .llen(QUEUE_KEY)
@@ -29,7 +29,7 @@ export async function getQueueLengths() {
     const [mainQueueResult, deadLetterResult] = results;
     
     return {
-        queued: mainQueueResult?.[1] ?? 0,
-        dead: deadLetterResult?.[1] ?? 0
+        queued: (mainQueueResult?.[1] as number) ?? 0,
+        dead: (deadLetterResult?.[1] as number) ?? 0
     };
 }
