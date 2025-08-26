@@ -1,6 +1,6 @@
 # RedisDistro
 
-**RedisDistro** is a fast, reliable Redis‑based **email queue** for Node.js applications, implemented in **TypeScript**. It allows subscription requests to be enqueued and processed asynchronously, decoupling email sending from your API logic and improving responsiveness and scalability.
+**RedisDistro** is a fast, reliable Redis‑based **email queue** for Node.js applications, implemented in **TypeScript**. It allows subscription to be enqueued and processed asynchronously, decoupling email sending from your API logic and improving responsiveness and scalability.
 
 ---
 
