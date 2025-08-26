@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { enqueueEmailTask } from "./enqueue.js";
-import { getQueueLengths } from "../config/redis.mjs";
+import { getQueueLengths } from "../config/redis.js";
 
 const app = express();
 app.use(bodyParser.json());

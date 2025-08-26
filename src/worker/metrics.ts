@@ -1,4 +1,4 @@
-import { getQueueLengths } from "../config/redis.mjs";
+import { getQueueLengths } from "../config/redis.js";
 import {redis,METRICS_KEY} from "../config/redis.js";
 
 export async function getMetrics(){
