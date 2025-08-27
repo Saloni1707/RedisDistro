@@ -34,4 +34,4 @@ npm start
 Push tasks into the queue and let workers process them with retries and error handling.
 
 ---
-MIT © 2025 Saloni1707
+
