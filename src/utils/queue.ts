@@ -25,8 +25,6 @@ export async function popTask():Promise<StoredTask|null>{
 
 }
 
-//mark task as complete
-
 export async function completeTask(id:string){
     await redis.incr(METRICS_KEY.processed);
 }
@@ -35,7 +33,6 @@ export async function completeTask(id:string){
 export async function failTask(stored:StoredTask,error?:string):Promise<void>{
     stored.attempts +=1;
     if(error){
-        //attach last error message for debugging
         (stored as any).lastError = error;
     }
     if (stored.attempts>=MAX_RETRIES){
