@@ -26,8 +26,7 @@ DEAD_KEY=
 
 ### Run
 ```bash
-npm run build
-npm start
+npm run dev
 ```
 
 ## Usage
