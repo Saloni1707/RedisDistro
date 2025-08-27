@@ -22,9 +22,9 @@ export async function processTasks() {
       }
 
       await completeTask(id);
-      logger.success(`✅ Task ${id} completed`);
+      logger.success(`Task ${id} completed`);
     } catch (err) {
-      logger.error(`❌ Task ${id} failed: ${(err as Error).message}`);
+      logger.error(`Task ${id} failed: ${(err as Error).message}`);
       await failTask(stored);
     }
   }

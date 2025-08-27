@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import {Redis} from 'ioredis' // Import Redis as a named import
+import {Redis} from 'ioredis' 
 
 export const redis = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379")
 
