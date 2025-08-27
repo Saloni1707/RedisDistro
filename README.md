@@ -1,7 +1,7 @@
 # RedisDistro
 
-A fast and reliable **Redis-based distributed queue system** written in **TypeScript**.  
-Ideal for tasks like **email delivery** and **background job processing**.
+A fast and reliable Redis-based distributed queue system written in TypeScript.  
+Ideal for tasks like email delivery and background job processing.
 
 ## Features
 - Redis-powered queue with retries and dead-letter support  
