@@ -19,9 +19,9 @@ npm install
 
 Create a `.env` file:
 ```env
-REDIS_URL=redis://localhost:6379
-QUEUE_KEY=queue:emails
-DEAD_KEY=queue:dead
+REDIS_URL=
+QUEUE_KEY=
+DEAD_KEY=
 ```
 
 ### Run
