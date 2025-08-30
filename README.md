@@ -96,10 +96,6 @@ Content-Type: application/json
 ```json
 { "message": "Task enqueued", "taskId": "..." }
 ```
-
-## Contributing
-
-Pull requests and issues are welcome!  
 ---
 
 ## License
