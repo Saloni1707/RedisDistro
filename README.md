@@ -89,7 +89,7 @@ Content-Type: application/json
   "to": "recipient@example.com",
   "subject": "Your Subject",
   "body": "Your message body",
-  "runAt": "tomorrow 8am" #here we can add date & time using natural language thanks to chrono
+  "runAt": "tomorrow 8am" 
 
 }
 ```
