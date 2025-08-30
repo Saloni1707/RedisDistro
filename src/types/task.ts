@@ -10,4 +10,5 @@ export interface StoredTask{
     id:string;
     task:EmailTask;
     attempts:number;
+    runAt?:number;
 }

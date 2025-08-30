@@ -12,12 +12,12 @@ app.get("/health", (req: any, res: any) => {
 
 app.post("/enqueue/email", async (req: any, res: any) => {
   try {
-    const { to, subject, body } = req.body;
+    const { to, subject, body,runAt } = req.body;
     if (!to || !subject || !body) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const id = await enqueueEmailTask(to, subject, body);
+    const id = await enqueueEmailTask(to, subject, body,runAt);
     res.status(200).json({ message: "Task enqueued", taskId: id });
   } catch (err) {
     console.error("Error enqueuing task:", err);

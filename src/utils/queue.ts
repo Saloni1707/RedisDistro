@@ -3,16 +3,34 @@ import crypto from 'crypto'
 import type {StoredTask,EmailTask} from "../types/task.js";
 
 const MAX_RETRIES=4;
+export const SCHEDULED_TASK="queue:scheduled";
 
-export async function pushTask(task: EmailTask) {
+export async function pushTask(task: EmailTask,runAt?:number) {
     const id=crypto.randomUUID();
     const payload:StoredTask={
         id,
         task,
         attempts:0,
+        ...(runAt ? {runAt} : {})
     }
-    await redis.lpush(QUEUE_KEY,JSON.stringify(payload));
+    if(runAt && runAt > Date.now()){
+        await redis.zadd(SCHEDULED_TASK,runAt,JSON.stringify(payload));
+    }else{
+        await redis.lpush(QUEUE_KEY,JSON.stringify(payload));
+    }
     return id;
+}
+
+//polling scheduled set for due jobs
+export async function moveDueScheduledTasks(){
+    const now = Date.now();
+    const jobs = await redis.zrangebyscore(SCHEDULED_TASK,0,now);
+    if(jobs.length){
+        for(const job of jobs){
+            await redis.lpush(QUEUE_KEY,job);
+        }
+        await redis.zremrangebyscore(SCHEDULED_TASK,0,now);
+    }
 }
 
 //pop from queue
