@@ -1,36 +1,123 @@
 # RedisDistro
 
-A fast and reliable Redis-based distributed queue system written in TypeScript.  
-Ideal for tasks like email delivery and background job processing.
+A fast, reliable, and extensible distributed queue system built atop Redis, written in TypeScript.  
+Perfect for background job processing, such as email delivery, with built-in retries, scheduling, dead-letter queues, and metrics.
+
+---
 
 ## Features
-- Redis-powered queue with retries and dead-letter support  
-- Worker-based task processing  
-- TypeScript-first design  
 
-## Getting Started
+- **Redis-powered queue:** Reliable and fast task queue leveraging Redis lists and sorted sets
+- **Retry and dead-letter support:** Automatic retries for failed tasks, with configurable dead-letter queue
+- **Task scheduling:** Schedule tasks for future execution
+- **Worker-based processing:** Scalable worker system to process tasks in parallel
+- **REST API producer:** Simple HTTP API for enqueuing and monitoring tasks
+- **Metrics:** Built-in queue and worker statistics
+- **TypeScript-first:** Modern and type-safe
 
-### Install & Setup
+---
+
+## Architecture Overview
+
+```
+[Producer API] → [Redis Queue/Scheduled Set] ←→ [Worker(s)]
+        ↑                                         ↓
+   [Dead-Letter Queue]        [Metrics]
+```
+
+- **Producer API:** Accepts task enqueue requests via HTTP.
+- **Redis:** Stores main queue, scheduled tasks, dead-letter queue, and metrics.
+- **Worker:** Continuously processes and manages tasks, including retries and failures.
+
+---
+
+## Quick Start
+
+### 1. Install & Setup
+
 ```bash
 git clone https://github.com/Saloni1707/RedisDistro.git
 cd RedisDistro
 npm install
 ```
 
-Create a `.env` file:
+Create a `.env` file with your configuration:
+
 ```env
-REDIS_URL=
-QUEUE_KEY=
-DEAD_KEY=
+REDIS_URL=redis://localhost:6379
+QUEUE_KEY=queue:emails
+DEAD_KEY=queue:dead
 ```
 
-### Run
+### 2. Start the Producer API
+
 ```bash
-npm run dev
+npm run producer
+# Or: node src/producer/server.js
 ```
 
-## Usage
-Push tasks into the queue and let workers process them with retries and error handling.
+### 3. Start a Worker Process
+
+```bash
+npm run worker
+# Or: node src/worker/worker.js
+```
 
 ---
 
+## Usage
+
+### Enqueue a Task
+
+Send a POST request to enqueue an email job:
+
+```http
+POST /enqueue/email
+Content-Type: application/json
+
+{
+  "to": "recipient@example.com",
+  "subject": "Your Subject",
+  "body": "Your message body",
+  "runAt": "tomorrow 8am" //demo
+
+}
+```
+
+**Response:**
+```json
+{ "message": "Task enqueued", "taskId": "..." }
+```
+---
+
+## Block Diagram
+
+![Workflow Diagram](assets/archi.png)
+
+---
+
+## How It Works
+
+1. **Enqueue:**  
+   Producer API validates and pushes tasks to Redis (immediately or scheduled).
+2. **Worker Loop:**  
+   - Periodically moves due scheduled tasks to the main queue.
+   - Pops tasks from the main queue and processes them (e.g., sends email).
+   - On failure, retries up to max attempts, then moves to dead-letter queue.
+   - Updates metrics for processed/failed tasks.
+3. **Monitoring:**  
+   Both API and worker expose metrics for queue health and throughput.
+
+---
+
+## Contributing
+
+Pull requests and issues are welcome!  
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## License
+
+MIT © [Saloni1707](https://github.com/Saloni1707)
+```
