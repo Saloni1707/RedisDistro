@@ -102,8 +102,6 @@ Content-Type: application/json
 ## Contributing
 
 Pull requests and issues are welcome!  
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
 ---
 
 ## License
