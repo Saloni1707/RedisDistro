@@ -16,17 +16,6 @@ Perfect for background job processing, such as email delivery, with built-in ret
 - **TypeScript-first:** Modern and type-safe
 
 ---
-## Quick Start
-
-### Install & Setup
-
-```bash
-git clone https://github.com/Saloni1707/RedisDistro.git
-cd RedisDistro
-npm install
-```
----
-
 ## Architecture Overview
 
 - **Producer API:** Accepts task enqueue requests via HTTP.
@@ -57,6 +46,15 @@ Create a `.env` file with your configuration:
 REDIS_URL=
 QUEUE_KEY=
 DEAD_KEY=
+```
+## Quick Start
+
+### Install & Setup
+
+```bash
+git clone https://github.com/Saloni1707/RedisDistro.git
+cd RedisDistro
+npm install
 ```
 
 ### Start the Producer API
