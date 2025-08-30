@@ -16,37 +16,47 @@ Perfect for background job processing, such as email delivery, with built-in ret
 - **TypeScript-first:** Modern and type-safe
 
 ---
-
-## Architecture Overview
-
-```
-[Producer API] → [Redis Queue/Scheduled Set] ←→ [Worker(s)]
-        ↑                                         ↓
-   [Dead-Letter Queue]        [Metrics]
-```
-
-- **Producer API:** Accepts task enqueue requests via HTTP.
-- **Redis:** Stores main queue, scheduled tasks, dead-letter queue, and metrics.
-- **Worker:** Continuously processes and manages tasks, including retries and failures.
-
----
-
 ## Quick Start
 
-### 1. Install & Setup
+### Install & Setup
 
 ```bash
 git clone https://github.com/Saloni1707/RedisDistro.git
 cd RedisDistro
 npm install
 ```
+---
+
+## Architecture Overview
+
+- **Producer API:** Accepts task enqueue requests via HTTP.
+- **Redis:** Stores main queue, scheduled tasks, dead-letter queue, and metrics.
+- **Worker:** Continuously processes and manages tasks, including retries and failures.
+
+![Workflow Diagram](assets/archi.png)
+
+---
+
+## How It Works
+
+1. **Enqueue:**  
+   Producer API validates and pushes tasks to Redis (immediately or scheduled).
+2. **Worker Loop:**  
+   - Periodically moves due scheduled tasks to the main queue.
+   - Pops tasks from the main queue and processes them (e.g., sends email).
+   - On failure, retries up to max attempts, then moves to dead-letter queue.
+   - Updates metrics for processed/failed tasks.
+3. **Monitoring:**  
+   Both API and worker expose metrics for queue health and throughput.
+
+---
 
 Create a `.env` file with your configuration:
 
 ```env
-REDIS_URL=redis://localhost:6379
-QUEUE_KEY=queue:emails
-DEAD_KEY=queue:dead
+REDIS_URL=
+QUEUE_KEY=
+DEAD_KEY=
 ```
 
 ### 2. Start the Producer API
@@ -56,7 +66,7 @@ npm run producer
 # Or: node src/producer/server.js
 ```
 
-### 3. Start a Worker Process
+### Start a Worker Process
 
 ```bash
 npm run worker
@@ -79,7 +89,7 @@ Content-Type: application/json
   "to": "recipient@example.com",
   "subject": "Your Subject",
   "body": "Your message body",
-  "runAt": "tomorrow 8am" //demo
+  "runAt": "tomorrow 8am" #here we can add date & time using natural language thanks to chrono
 
 }
 ```
@@ -88,27 +98,6 @@ Content-Type: application/json
 ```json
 { "message": "Task enqueued", "taskId": "..." }
 ```
----
-
-## Block Diagram
-
-![Workflow Diagram](assets/archi.png)
-
----
-
-## How It Works
-
-1. **Enqueue:**  
-   Producer API validates and pushes tasks to Redis (immediately or scheduled).
-2. **Worker Loop:**  
-   - Periodically moves due scheduled tasks to the main queue.
-   - Pops tasks from the main queue and processes them (e.g., sends email).
-   - On failure, retries up to max attempts, then moves to dead-letter queue.
-   - Updates metrics for processed/failed tasks.
-3. **Monitoring:**  
-   Both API and worker expose metrics for queue health and throughput.
-
----
 
 ## Contributing
 
