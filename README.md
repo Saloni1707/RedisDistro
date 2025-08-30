@@ -59,7 +59,7 @@ QUEUE_KEY=
 DEAD_KEY=
 ```
 
-### 2. Start the Producer API
+### Start the Producer API
 
 ```bash
 npm run producer
@@ -109,4 +109,3 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## License
 
 MIT © [Saloni1707](https://github.com/Saloni1707)
-```
